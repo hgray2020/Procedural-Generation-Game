@@ -11,7 +11,7 @@ ArrayList<Torch> torches = new ArrayList<Torch>();
 int sCount;
 int rCount;
 int gCount;
-int tCount = 30;
+int tCount;
 boolean loadNew =true;
 float darkness = 0;
 float con = 7;
@@ -20,6 +20,7 @@ int delayc = 50;
 int cd = delayc;
 int delayp = 50;
 int pd = delayp;
+boolean craft = false;
 
 
 float cycle = 1000;
@@ -70,7 +71,7 @@ void saveAndExit() {
 void debugScreen() {
   fill(255);
   rectMode(CORNER);
-  rect(0, 0, 150, 150);
+  rect(0, 0, 150, 250);
   fill(0);
   textAlign(CORNER);
   text(round(frameRate), 10, 10);
@@ -79,8 +80,37 @@ void debugScreen() {
   text(-1*(ly/10), 10, 50);
   text(time, 10, 75);
   text(torches.size(), 10, 100);
+  text(mouseX, 10, 125);
+  text(mouseY, 10, 150);
+  text(craft+"", 10, 175);
   textAlign(CENTER);
   rectMode(CENTER);
+}
+
+void crafting(){
+  fill(255);
+  rect(400, 400, 400, 600);
+  stroke(255, 150, 150);
+  line(560, 140, 590, 110);
+  line(560, 110, 590, 140);
+  if(mousePressed && mouseX > 555 && mouseX < 600 && mouseY < 145 && mouseY > 100){
+   craft = false; 
+  }
+  pushMatrix();
+  translate(235, 150);
+  fill(153, 76, 0);
+  noStroke();
+  //rotate(QUARTER_PI);
+  rect(0, 0, 4, 24);
+  fill(204, 204, 0);
+  rect(0, -12, 4, 4);
+  popMatrix();
+  
+  if(sCount >= 1 && rCount >=2 && mousePressed && mouseX > 225 && mouseX < 250 && mouseY > 125 && mouseY < 165){
+    tCount++;
+    sCount--;
+    rCount-=2;
+  }
 }
 
 void collect() {
@@ -269,9 +299,6 @@ void draw() {
   if (keyPressed && key == 'k') {
     collect();
   }
-  if (keyPressed && key == 'c') {
-    //crafting();
-  }
   if(mousePressed && mouseButton == RIGHT && pd == 0){
     torches.add(new Torch(-1*(lx)+400, -1*(ly)+400));
     pd = delayp;
@@ -357,4 +384,12 @@ void draw() {
     
   }
   debugScreen();
+  
+  if (keyPressed && key == 'c') {
+    craft = true;
+  }
+  
+  if(craft){
+   crafting(); 
+  }
 }
