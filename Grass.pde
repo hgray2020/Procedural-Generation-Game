@@ -39,20 +39,29 @@ class Grass {
     if (dist(lx+x, ly+y, 400, 400) < 40) {
       dead = true;
       if (dist(lx+x, ly+y, 400, 400) < 40) {
-      dead = true;
-      boolean b = false;
-      for (int p = 0; p < inv.size(); p++) {
-        Item i = inv.get(p);
-        if (i.id == 2) {
-          Item t = inv.get(p);
-          inv.set(p, new Item(t.name, t.slot, t.id, t.c+1));
-          b = true;
+        dead = true;
+        boolean b = false;
+        for (int p = 0; p < inv.size(); p++) {
+          Item i = inv.get(p);
+          if (i.id == 2) {
+            Item t = inv.get(p);
+            inv.set(p, new Item(t.name, t.slot, t.id, t.c+1));
+            b = true;
+          }
+        }
+        if (!b) {
+          boolean a = false;
+          for (int p = 0; p < inv.size(); p++) {
+            if (inv.get(p) == null) {
+              inv.set(p, new Item("Grass", p-1, 2, 1));
+              a = true;
+            }
+          }
+          if (!a) {
+            inv.add(new Item("Grass", inv.size(), 2, 1));
+          }
         }
       }
-      if(!b){
-       inv.add(new Item("Grass", inv.size(), 2, 1)); 
-      }
-    }
     }
   }
 }

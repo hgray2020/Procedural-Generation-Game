@@ -35,7 +35,16 @@ class Torch {
         }
       }
       if (!b) {
-        inv.add(new Item("Torch", inv.size(), 3, 1));
+        boolean a = false;
+        for (int p = 0; p < inv.size(); p++) {
+          if (inv.get(p) == null) {
+            inv.set(p, new Item("Torch", p-1, 3, 1));
+            a = true;
+          }
+        }
+        if (!a) {
+          inv.add(new Item("Torch", inv.size(), 3, 1));
+        }
       }
     }
   }

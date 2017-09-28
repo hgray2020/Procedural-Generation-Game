@@ -34,7 +34,16 @@ class Stick {
           }
         }
         if (!b) {
+          boolean a = false;
+          for(int p = 0; p < inv.size(); p++){
+           if(inv.get(p) == null){
+             inv.set(p, new Item("Stick", p-1, 0, 1));
+             a = true;
+           }
+          }
+          if(!a){
           inv.add(new Item("Stick", inv.size(), 0, 1));
+          }
         }
       }
     }

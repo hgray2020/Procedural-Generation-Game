@@ -1,5 +1,5 @@
 void inventory(){
-  fill(180, 50);
+  fill(80, 150);
   stroke(255);
   strokeWeight(1);
   for(int x = 175; x < 625; x+=50){

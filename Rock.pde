@@ -34,8 +34,18 @@ class Rock {
           b = true;
         }
       }
-      if(!b){
-       inv.add(new Item("Rock", inv.size(), 1, 1)); 
+      if (!b) {
+
+        boolean a = false;
+        for (int p = 0; p < inv.size(); p++) {
+          if (inv.get(p) == null) {
+            inv.set(p, new Item("Rock", p-1, 1, 1));
+            a = true;
+          }
+        }
+        if (!a) {
+          inv.add(new Item("Rock", inv.size(), 1, 1));
+        }
       }
     }
   }

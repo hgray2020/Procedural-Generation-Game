@@ -46,7 +46,7 @@ void di(int n, float x, float y) { //all display functions for items (Display It
   if (n == 0) {
     pushMatrix();
     translate(x, y);
-    fill(153-darkness, 76-darkness, 0);
+    fill(153, 76, 0);
     noStroke();
     rotate(0.7);
     rect(0, 0, 4, 24);
@@ -55,7 +55,7 @@ void di(int n, float x, float y) { //all display functions for items (Display It
   if (n == 1) {
     pushMatrix();
     translate(x, y);
-    fill(105-darkness);
+    fill(105);
     noStroke();
     rotate(2);
     quad(-10, -5, -10, 10, 0, 15, 10, 5);
@@ -66,7 +66,7 @@ void di(int n, float x, float y) { //all display functions for items (Display It
   if (n == 2) {
     pushMatrix();
     translate(x, y);
-    fill(0, 125-darkness, 0);
+    fill(0, 125, 0);
     noStroke();
 
 
@@ -97,6 +97,17 @@ void di(int n, float x, float y) { //all display functions for items (Display It
     rect(0, 0, 4, 24);
     fill(204, 204, 0);
     rect(0, -12, 4, 4);
+    popMatrix();
+  }
+  if (n == 4) {
+    pushMatrix();
+    translate(x, y);
+    fill(153, 76, 0);
+    noStroke();
+    //rotate(QUARTER_PI);
+    rect(0, 0, 4, 24);
+    fill(105);
+    rect(2, -3, 8, 18);
     popMatrix();
   }
 }
