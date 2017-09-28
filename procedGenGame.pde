@@ -107,6 +107,15 @@ void crafting() {
     craft = false;
   }
   pushMatrix();
+  translate(275, 150);
+  fill(153, 76, 0);
+  noStroke();
+  //rotate(QUARTER_PI);
+  rect(0, 0, 4, 24);
+  fill(204, 204, 0);
+  rect(2, -3, 8, 18);
+  popMatrix();
+  pushMatrix();
   translate(235, 150);
   fill(153, 76, 0);
   noStroke();
