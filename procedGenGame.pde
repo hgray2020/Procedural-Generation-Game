@@ -15,13 +15,18 @@ int tCount;
 boolean loadNew =true;
 float darkness = 0;
 float con = 7;
-boolean torch = true;
+boolean torch = false;
 int delayc = 50;
 int cd = delayc;
 int delayp = 50;
 int pd = delayp;
 boolean craft = false;
+int sel = 0; //slot selected;
+ArrayList<Item> inv = new ArrayList<Item>(); //inventory
 
+ArrayList<Item> il = new ArrayList<Item>(); //arraylist of all items possible
+
+boolean clicked = false;
 
 float cycle = 1000;
 float time = cycle/2;
@@ -68,6 +73,10 @@ void saveAndExit() {
   exit();
 }
 
+void mouseClicked(){
+ clicked = true; 
+}
+
 void debugScreen() {
   fill(255);
   rectMode(CORNER);
@@ -83,18 +92,19 @@ void debugScreen() {
   text(mouseX, 10, 125);
   text(mouseY, 10, 150);
   text(craft+"", 10, 175);
+  text(sel, 10, 200);
   textAlign(CENTER);
   rectMode(CENTER);
 }
 
-void crafting(){
+void crafting() {
   fill(255);
   rect(400, 400, 400, 600);
   stroke(255, 150, 150);
   line(560, 140, 590, 110);
   line(560, 110, 590, 140);
-  if(mousePressed && mouseX > 555 && mouseX < 600 && mouseY < 145 && mouseY > 100){
-   craft = false; 
+  if (mousePressed && mouseX > 555 && mouseX < 600 && mouseY < 145 && mouseY > 100) {
+    craft = false;
   }
   pushMatrix();
   translate(235, 150);
@@ -105,11 +115,37 @@ void crafting(){
   fill(204, 204, 0);
   rect(0, -12, 4, 4);
   popMatrix();
-  
-  if(sCount >= 1 && rCount >=2 && mousePressed && mouseX > 225 && mouseX < 250 && mouseY > 125 && mouseY < 165){
-    tCount++;
-    sCount--;
-    rCount-=2;
+  if (((clicked) || (mousePressed && keyPressed && keyCode == SHIFT)) && mouseX > 225 && mouseX < 250 && mouseY > 125 && mouseY < 165) {
+    for (int p = 0; p < inv.size(); p++) {
+      if (inv.get(p).name == "Stick" && inv.get(p).c >= 1) {
+        for (int q = 0; q < inv.size(); q++) {
+          if (inv.get(q).name == "Rock" && inv.get(q).c >= 2) {
+            boolean b = false;
+            for (int r = 0; r < inv.size(); r++) {
+              Item i = inv.get(r);
+              if (i.id == 3) {
+                Item t = inv.get(r);
+                inv.set(r, new Item(t.name, t.slot, t.id, t.c+1));
+                b = true;
+              }
+            }
+            if (!b) {
+              inv.add(new Item("Torch", inv.size(), 3, 1));
+            }
+            if (inv.get(q).c > 2) {
+              inv.get(q).c-=2;
+            } else {
+             inv.remove(q); 
+            }
+            if (inv.get(p).c > 1) {
+              inv.get(p).c--;
+            } else {
+             inv.remove(p); 
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -175,8 +211,8 @@ void mapThing() {
   for (Stick s : sticks) {
     s.display();
   }
-  for(Torch t : torches){
-   t.display(); 
+  for (Torch t : torches) {
+    t.display();
   }
   for (int p = 0; p < rocks.size(); p++) {
     if (rocks.get(p).dead) {
@@ -299,97 +335,36 @@ void draw() {
   if (keyPressed && key == 'k') {
     collect();
   }
-  if(mousePressed && mouseButton == RIGHT && pd == 0){
+  if (mousePressed && mouseButton == RIGHT && pd == 0 && torch) {
     torches.add(new Torch(-1*(lx)+400, -1*(ly)+400));
     pd = delayp;
     tCount--;
   }
-  if(pd > 0){
-   pd--; 
+  if (pd > 0) {
+    pd--;
   }
-  
+
   rectMode(CENTER);
-  fill(0, 200-darkness, 240-darkness);
+  fill(0, 165-darkness, 200-darkness);
   rect(400, 400, 50, 50);
 
-  pushMatrix();
-  translate(325, 760);
-  fill(153, 76, 0);
-  noStroke();
-  rotate(QUARTER_PI);
-  rect(0, 0, 4, 24);
-  popMatrix();
-
-  pushMatrix();
-  translate(375, 760);
-  fill(0, 125, 0);
-  noStroke();
-
-
-  pushMatrix();
-  translate(-10, 0);
-  triangle(0, 0, -5, 10, 5, 10);
-  popMatrix();
-
-  pushMatrix();
-  translate(0, 0);
-  triangle(0, 0, -5, 10, 5, 10);
-  popMatrix();
-
-  pushMatrix();
-  translate(10, 0);
-  triangle(0, 0, -5, 10, 5, 10);
-  popMatrix();
-
-
-  popMatrix();
-
-  pushMatrix();
-  translate(425, 760);
-  fill(105);
-  noStroke();
-  rotate(0);
-  quad(-10, -5, -10, 10, 0, 15, 10, 5);
-  popMatrix();
-  
-   pushMatrix();
-  translate(475, 760);
-  
-  fill(153, 76, 0);
-  noStroke();
-  //rotate(QUARTER_PI);
-  rect(0, 0, 4, 24);
-  fill(204, 204, 0);
-  rect(0, -12, 4, 4);
-  popMatrix();
-
-  stroke(255);
-  noFill();
-  rect(325, 760, 50, 50);
-  rect(375, 760, 50, 50);
-  rect(425, 760, 50, 50);
-  rect(475, 760, 50, 50);
-  textAlign(CENTER);
-  fill(255);
-  text(sCount, 325, 730);
-  text(gCount, 375, 730);
-  text(rCount, 425, 730);
-  text(tCount, 475, 730);
-  fill(0);
-  text(frameRate, 100, 100);
+  inventory();
   if (torch) {
     fill(200, 50);
     noStroke();
     ellipse(400, 400, 400, 400);
-    
   }
   debugScreen();
-  
+
   if (keyPressed && key == 'c') {
     craft = true;
   }
-  
-  if(craft){
-   crafting(); 
+  if (keyPressed && key >= 49 && key <= 57) {
+    sel = key-49;
   }
+
+  if (craft) {
+    crafting();
+  }
+  clicked = false;
 }

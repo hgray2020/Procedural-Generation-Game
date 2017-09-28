@@ -19,12 +19,24 @@ class Torch {
     ellipse(0, 0, 400, 400);
     fill(204+round(random(-10, 10)), 204+round(random(-10, 10)), 0);
     rect(0, 0, 15, 15);
-    
+
     popMatrix();
     popMatrix();
     if (dist(lx+x, ly+y, 400, 400) < 65 && mousePressed && mouseButton == LEFT) {
       dead = true;
-      tCount++;
+
+      boolean b = false;
+      for (int p = 0; p < inv.size(); p++) {
+        Item i = inv.get(p);
+        if (i.id == 3) {
+          Item t = inv.get(p);
+          inv.set(p, new Item(t.name, t.slot, t.id, t.c+1));
+          b = true;
+        }
+      }
+      if (!b) {
+        inv.add(new Item("Torch", inv.size(), 3, 1));
+      }
     }
   }
 }
