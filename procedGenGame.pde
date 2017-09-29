@@ -1,7 +1,7 @@
 PImage grass;
 Entity steve = new Entity(200, 200, 5, 5);
 int bSize = 30;
-int numBiomes = 10;
+int numBiomes = 11;
 ArrayList<Biome> biomes = new ArrayList<Biome>();
 int speed = 10;
 float scale = 1;
@@ -26,6 +26,10 @@ boolean craft = false;
 int sel = 0; //slot selected;
 ArrayList<Item> inv = new ArrayList<Item>(); //inventory
 boolean spawned = false;
+boolean attack = false;
+int cool = 0;
+int pow = 2;
+float rot;
 
 ArrayList<Item> il = new ArrayList<Item>(); //arraylist of all items possible
 
@@ -86,20 +90,16 @@ void debugScreen() {
   rect(0, 0, 150, 300);
   fill(0);
   textAlign(CORNER);
-  text(round(frameRate), 10, 10);
+  text(round(frameRate), 10, 25);
 
-  text(-1*(lx/10), 10, 25);
-  text(-1*(ly/10), 10, 50);
-  text(time, 10, 75);
-  text(torches.size(), 10, 100);
+  text(-1*(lx/10), 10, 50);
+  text(-1*(ly/10), 10, 75);
+  text(time, 10, 100);
   text(mouseX, 10, 125);
   text(mouseY, 10, 150);
-  text(torch+"", 10, 175);
-  text(sel, 10, 200);
-  if (inv.size() >= 3) {
-    text(inv.get(2).name, 10, 225);
-    text(inv.get(2).id, 10, 250);
-  }
+  text(rot, 10, 175);
+  text(attack+"", 10, 200);
+  text(cool, 10, 225);
   textAlign(CENTER);
   rectMode(CENTER);
 }
@@ -168,9 +168,7 @@ void mapThing() {
   for (Stick s : sticks) {
     s.display();
   }
-  for (Torch t : torches) {
-    t.display();
-  }
+
   for (int p = 0; p < rocks.size(); p++) {
     if (rocks.get(p).dead) {
       rocks.remove(p);
@@ -192,6 +190,12 @@ void mapThing() {
   for (int p = 0; p < torches.size(); p++) {
     if (torches.get(p).dead) {
       torches.remove(p);
+      p--;
+    }
+  }
+  for (int p = 0; p < monsters.size(); p++) {
+    if (monsters.get(p).dead) {
+      monsters.remove(p);
       p--;
     }
   }
@@ -233,6 +237,7 @@ void setup() {
   }
   size(800, 800);
   grass = loadImage("path2.png");
+  //inv.add(new Item("Knife", 4, 1, 1));
 }
 
 void draw() {
@@ -274,19 +279,42 @@ void draw() {
   loadNew = false;
   background(82-darkness, 82-darkness, 255-darkness);
   mapThing();
+
+  rot = atan2(mouseY-400, mouseX-400)+HALF_PI;
+
+  pushMatrix();
+  translate(400, 400);
+
+  rectMode(CENTER);
+  rotate(rot);
+  fill(0, 165-darkness, 200-darkness);
+  rect(0, 0, 50, 50);
+  fill(80-darkness);
+  stroke(0);
+  line(0, 0, 0, -400);
+  line(0, 0, -400*sqrt(2), -400*sqrt(2));
+  line(0, 0, 400*sqrt(2), -400*sqrt(2));
   
+  noStroke();
+  rect(0, -12.5, 50, 25);
+  popMatrix();
+
 
   if (keys['w']) {
-    ly+=speed;
+    lx-=sin(rot)*speed;
+    ly+=cos(rot)*speed;
   }
   if (keys['a']) {
-    lx+=speed;
+    lx+=cos(rot)*speed;
+    ly+=sin(rot)*speed;
   }
   if (keys['s']) {
-    ly-=speed;
+    lx+=sin(rot)*speed;
+    ly-=cos(rot)*speed;
   }
   if (keys['d']) {
-    lx-=speed;
+    lx-=cos(rot)*speed;
+    ly-=sin(rot)*speed;
   }
   if (keys['q']) {
     if (darkness < 13*con) {
@@ -314,9 +342,7 @@ void draw() {
     pd--;
   }
 
-  rectMode(CENTER);
-  fill(0, 165-darkness, 200-darkness);
-  rect(400, 400, 50, 50);
+
 
   inventory();
   if (torch) {
@@ -337,7 +363,29 @@ void draw() {
     crafting();
   }
   clicked = false;
+
+  for (Item i : inv) {
+    if (i.id == 3 && i.c < 1) {
+      torch = false;
+    }
+  }
+  for (Torch t : torches) {
+    t.display();
+  }
+  if (inv.size() > 0) {
+    if (mousePressed && inv.get(sel).id == 4 && cool == 0) {
+      attack = true;
+      cool = 30;
+    }
+  }
   for (Monster m : monsters) {
     m.act();
+  }
+  if (cool < 15) {
+    attack = false;
+  }
+  if (cool > 0) {
+
+    cool--;
   }
 }

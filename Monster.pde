@@ -1,6 +1,9 @@
 class Monster {
   float x, y, s, h;
   int p;
+  boolean dead;
+  Point arc;
+  int re;
 
   Monster(float ex, float why, float speed, float health) {
     x = ex;
@@ -13,6 +16,26 @@ class Monster {
     getP();
     move();
     display();
+    if(h <= 0){
+     dead = true; 
+    }
+    calcArc();
+    if(attack && rot < arc.y && rot > arc.x){
+     h-=pow; 
+     re = 50;
+    }
+    if(re > 0){
+     re--; 
+    }
+  }
+  
+  void calcArc(){
+    float min, max;
+    float r = atan2(y-400, x-400)-HALF_PI;
+    min = r-QUARTER_PI;
+    max = r+QUARTER_PI;
+    text(min+" "+max, lx+x, ly+y+20);
+    arc = new Point(min, max);
   }
 
   void getP() {
@@ -45,7 +68,8 @@ class Monster {
     translate(x, y);
     fill(54-darkness, 179-darkness, 112-darkness);
     rect(0, 0, 50, 50);
-
+    fill(255);
+    text(h, 0, 0);
     popMatrix();
     popMatrix();
   }

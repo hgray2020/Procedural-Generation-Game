@@ -6,6 +6,15 @@ void loadItems() {
   il.add(new Item("Knife", -1, 4, 0));
 }
 
+class Point {
+  float x, y;
+  
+  Point(float ex, float why) {
+    x = ex;
+    y = why;
+  }
+}
+
 void di(int n, float x, float y) { //all display functions for items (Display Items)
   /*switch(n) {
    case 1:
