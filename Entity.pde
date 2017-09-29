@@ -21,6 +21,8 @@ class Entity {
     }
   }
   
+  
+  
   void display(){
    pushMatrix();
    translate(lx, ly);

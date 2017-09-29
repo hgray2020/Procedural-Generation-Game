@@ -83,7 +83,7 @@ void mouseClicked() {
 void debugScreen() {
   fill(255);
   rectMode(CORNER);
-  rect(0, 0, 150, 250);
+  rect(0, 0, 150, 300);
   fill(0);
   textAlign(CORNER);
   text(round(frameRate), 10, 10);
@@ -94,8 +94,12 @@ void debugScreen() {
   text(torches.size(), 10, 100);
   text(mouseX, 10, 125);
   text(mouseY, 10, 150);
-  text(craft+"", 10, 175);
+  text(torch+"", 10, 175);
   text(sel, 10, 200);
+  if (inv.size() >= 3) {
+    text(inv.get(2).name, 10, 225);
+    text(inv.get(2).id, 10, 250);
+  }
   textAlign(CENTER);
   rectMode(CENTER);
 }
@@ -259,7 +263,7 @@ void draw() {
   }
   if (spawned) {
     for (int p = 0; p < 10; p++) {
-      monsters.add(new Monster(400+round(random(-400, 400)), 400+round(random(-400, 400)), 3, 20));
+      monsters.add(new Monster(400+round(random(-400, 400)), 400+round(random(-400, 400)), 5, 20));
     }
     spawned = false;
   }
@@ -270,7 +274,7 @@ void draw() {
   loadNew = false;
   background(82-darkness, 82-darkness, 255-darkness);
   mapThing();
-  println(darkness);
+  
 
   if (keys['w']) {
     ly+=speed;
@@ -300,7 +304,11 @@ void draw() {
   if (mousePressed && mouseButton == RIGHT && pd == 0 && torch) {
     torches.add(new Torch(-1*(lx)+400, -1*(ly)+400));
     pd = delayp;
-    tCount--;
+    for (int p = 0; p < inv.size(); p++) {
+      if (inv.get(p).name == "Torch") {
+        inv.get(p).c = inv.get(p).c-1;
+      }
+    }
   }
   if (pd > 0) {
     pd--;

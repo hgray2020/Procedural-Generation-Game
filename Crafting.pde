@@ -37,7 +37,7 @@ void crafting() {
               Item i = inv.get(r);
               if (i.id == 3) {
                 Item t = inv.get(r);
-                inv.set(r, new Item(t.name, t.slot, t.id, t.c+1));
+                inv.set(r, new Item("Torch", t.slot, t.id, t.c+1));
                 b = true;
               }
             }
