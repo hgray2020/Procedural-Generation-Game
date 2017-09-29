@@ -1,4 +1,5 @@
 PImage grass;
+Entity steve = new Entity(200, 200, 5, 5);
 int bSize = 30;
 int numBiomes = 10;
 ArrayList<Biome> biomes = new ArrayList<Biome>();
@@ -8,6 +9,7 @@ ArrayList<Rock> rocks = new ArrayList<Rock>();
 ArrayList<Grass> gList = new ArrayList<Grass>();
 ArrayList<Stick> sticks = new ArrayList<Stick>();
 ArrayList<Torch> torches = new ArrayList<Torch>();
+ArrayList<Monster> monsters = new ArrayList<Monster>();
 int sCount;
 int rCount;
 int gCount;
@@ -23,6 +25,7 @@ int pd = delayp;
 boolean craft = false;
 int sel = 0; //slot selected;
 ArrayList<Item> inv = new ArrayList<Item>(); //inventory
+boolean spawned = false;
 
 ArrayList<Item> il = new ArrayList<Item>(); //arraylist of all items possible
 
@@ -73,8 +76,8 @@ void saveAndExit() {
   exit();
 }
 
-void mouseClicked(){
- clicked = true; 
+void mouseClicked() {
+  clicked = true;
 }
 
 void debugScreen() {
@@ -251,6 +254,15 @@ void draw() {
   if (time > cycle) {
     time = 0;
   }
+  if (time == (6*cycle)/10) {
+    spawned = true;
+  }
+  if (spawned) {
+    for (int p = 0; p < 10; p++) {
+      monsters.add(new Monster(400+round(random(-400, 400)), 400+round(random(-400, 400)), 3, 20));
+    }
+    spawned = false;
+  }
 
   if (loadNew) {
     loadWorld();
@@ -317,4 +329,7 @@ void draw() {
     crafting();
   }
   clicked = false;
+  for (Monster m : monsters) {
+    m.act();
+  }
 }
