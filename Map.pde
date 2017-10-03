@@ -17,12 +17,15 @@ void maps() {
   for (miniBiome m : miniBiomes) {
     m.display();
   }
+  float minx = (sc*bSize)+400;
+  float maxx = ((sc*10)*bSize)-400;
+  float maxy = ((sc*2)*bSize)-400;
   float tx, ty;
-  tx = map(-1*lx, -1450, 10100, 680, 790);
-  ty = map(-1*ly, -1450, 1700, 40, 70);
+  tx = map(-1*lx, -1*minx, maxx, 680, 790);
+  ty = map(-1*ly, -1*minx, maxy, 40, 70);
   fill(255, 0, 0);
   noStroke();
-  ellipse(tx, ty, 10, 10);
+  ellipse(tx, ty, 6, 6);
 }
 
 
@@ -35,8 +38,8 @@ class miniBiome {
 
     r = 100/(numBiomes/2);
 
-    x = (ex/(bSize*35))*(r/2);
-    y = (why/(bSize*35))*(r/2);
+    x = (ex/(bSize*sc))*(r/2);
+    y = (why/(bSize*sc))*(r/2);
 
     type = t;
   }

@@ -4,7 +4,7 @@ int bSize = 30;
 int numBiomes = 10;
 ArrayList<Biome> biomes = new ArrayList<Biome>();
 ArrayList<miniBiome> miniBiomes = new ArrayList<miniBiome>();
-int speed = 10;
+int speed = 20;
 float scale = 1;
 ArrayList<Rock> rocks = new ArrayList<Rock>();
 ArrayList<Grass> gList = new ArrayList<Grass>();
@@ -32,6 +32,8 @@ int cool = 0;
 int pow = 2;
 float rot;
 float tot;
+
+int sc = 35;
 
 ArrayList<Item> il = new ArrayList<Item>(); //arraylist of all items possible
 
@@ -154,7 +156,7 @@ void loadWorld() {
   }
   for (int p = 0; p < numBiomes; p++) {
     
-    biomes.add(new Biome(0, bSize*70, ((p%numBiomes)*bSize*35), (p%2)*bSize*35));
+    biomes.add(new Biome(0, bSize*sc*2, ((p%numBiomes)*bSize*sc), (p%2)*bSize*sc));
   }
 }
 

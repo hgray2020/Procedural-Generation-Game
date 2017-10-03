@@ -67,6 +67,7 @@ class Biome {
     }
 
     rectMode(CENTER);
+    
     rect(x, y, r, r);
     if (type == 0) {
       fill(13-darkness, 146-darkness, 13-darkness, 100-darkness);
