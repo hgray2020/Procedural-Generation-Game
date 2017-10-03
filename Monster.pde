@@ -20,7 +20,7 @@ class Monster {
      dead = true; 
     }
     calcArc();
-    if(attack && rot < arc.y && rot > arc.x){
+    if(attack && rot < arc.y && rot > arc.x && dist(lx+x, ly+y, 400, 400) < 85){
      h-=pow; 
      re = 50;
     }
@@ -31,10 +31,13 @@ class Monster {
   
   void calcArc(){
     float min, max;
-    float r = atan2(y-400, x-400)-HALF_PI;
+    stroke(0);
+    strokeWeight(2);
+    float r = atan2((ly+y)-400, (lx+x)-400)+HALF_PI;
+    
     min = r-QUARTER_PI;
     max = r+QUARTER_PI;
-    text(min+" "+max, lx+x, ly+y+20);
+    
     arc = new Point(min, max);
   }
 
@@ -62,14 +65,14 @@ class Monster {
   }
 
   void display() {
+    noStroke();
     pushMatrix();
     translate(lx, ly);
     pushMatrix();
     translate(x, y);
     fill(54-darkness, 179-darkness, 112-darkness);
     rect(0, 0, 50, 50);
-    fill(255);
-    text(h, 0, 0);
+    
     popMatrix();
     popMatrix();
   }

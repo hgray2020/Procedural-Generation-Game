@@ -4,7 +4,7 @@ int bSize = 30;
 int numBiomes = 10;
 ArrayList<Biome> biomes = new ArrayList<Biome>();
 ArrayList<miniBiome> miniBiomes = new ArrayList<miniBiome>();
-int speed = 20;
+int speed = 5;
 float scale = 1;
 ArrayList<Rock> rocks = new ArrayList<Rock>();
 ArrayList<Grass> gList = new ArrayList<Grass>();
@@ -242,7 +242,8 @@ void setup() {
   }
   size(800, 800);
   grass = loadImage("path2.png");
-  //inv.add(new Item("Knife", 4, 1, 1));
+  inv.add(new Item("Knife", 0, 4, 1));
+  
 }
 
 void draw() {
@@ -380,13 +381,13 @@ void draw() {
   if (inv.size() > 0) {
     if (mousePressed && inv.get(sel).id == 4 && cool == 0) {
       attack = true;
-      cool = 30;
+      cool = 100;
     }
   }
   for (Monster m : monsters) {
     m.act();
   }
-  if (cool < 15) {
+  if (cool < 99) {
     attack = false;
   }
   if (cool > 0) {
@@ -394,4 +395,7 @@ void draw() {
     cool--;
   }
   maps();
+  noFill();
+  stroke(0);
+  ellipse(400, 400, 300, 300);
 }
