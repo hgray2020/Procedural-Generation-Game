@@ -1,8 +1,9 @@
 PImage grass;
 Entity steve = new Entity(200, 200, 5, 5);
 int bSize = 30;
-int numBiomes = 11;
+int numBiomes = 10;
 ArrayList<Biome> biomes = new ArrayList<Biome>();
+ArrayList<miniBiome> miniBiomes = new ArrayList<miniBiome>();
 int speed = 10;
 float scale = 1;
 ArrayList<Rock> rocks = new ArrayList<Rock>();
@@ -30,6 +31,7 @@ boolean attack = false;
 int cool = 0;
 int pow = 2;
 float rot;
+float tot;
 
 ArrayList<Item> il = new ArrayList<Item>(); //arraylist of all items possible
 
@@ -151,7 +153,8 @@ void loadWorld() {
     sticks.remove(0);
   }
   for (int p = 0; p < numBiomes; p++) {
-    biomes.add(new Biome(round(bSize*random(50, 185)), ((p%numBiomes)*bSize*50), (p%2)*bSize*50, 0));
+    
+    biomes.add(new Biome(0, bSize*70, ((p%numBiomes)*bSize*35), (p%2)*bSize*35));
   }
 }
 
@@ -223,7 +226,7 @@ void setup() {
     info1 = shorten(info1); 
     for (int c = 0; c < info1.length; c++) {
       info2 = split(info1[c], "t");
-      biomes.add(new Biome(Integer.parseInt(info2[0]), Integer.parseInt(info2[1]), Float.parseFloat(info2[2]), Float.parseFloat(info2[3])));
+      //biomes.add(new Biome(Integer.parseInt(info2[0]), Integer.parseInt(info2[1]), Float.parseFloat(info2[2]), Float.parseFloat(info2[3])));
     }
 
 
@@ -388,4 +391,5 @@ void draw() {
 
     cool--;
   }
+  maps();
 }

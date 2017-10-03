@@ -2,6 +2,7 @@ class Biome {
   int r;
   float x, y;
   int type; //0 is grassy, 1 is sandy, 2 is rocky
+  float ran;
 
   Biome(int t, int rad, float ex, float why) {
     if (loadNew) {
@@ -15,7 +16,7 @@ class Biome {
       if (temp > 4) {
         type = 1;
       }
-
+      
       r = rad;
       x = ex;
       y = why;
